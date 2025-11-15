@@ -13,7 +13,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -47,35 +47,31 @@
 
       /* Font Classes */
       .font-corsiva {
-        font-family: "Corsiva", "Playfair Display", cursive;
-        font-weight: normal;
-        font-style: normal;
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
       }
 
       .font-corsiva-bold {
-        font-family: "Corsiva", "Playfair Display", cursive;
-        font-weight: bold;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
       }
 
       .font-corsiva-italic {
-        font-family: "Corsiva", "Playfair Display", cursive;
+        font-family: "Poppins", sans-serif;
         font-style: italic;
       }
 
       .font-corsiva-bold-italic {
-        font-family: "Corsiva", "Playfair Display", cursive;
-        font-weight: bold;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
         font-style: italic;
       }
 
-      /* Ganti semua penggunaan font-cursive dengan font-corsiva */
       .font-cursive {
-        font-family: "Corsiva", "Playfair Display", cursive;
-        font-weight: normal;
-        font-style: normal;
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
         font-size: 1.1rem;
         line-height: 1.6;
-        letter-spacing: 0.5px;
       }
       /* Enhanced Hero Section Styles */
       .hero-section {
@@ -464,7 +460,6 @@
           inset 0 0 20px rgba(255, 255, 255, 0.6);
       }
 
-
       .photo-frame-inner {
         position: relative;
         border-radius: 10px;
@@ -642,23 +637,23 @@
       /* ========== SMOOTH LUXURY SCROLLING ========== */
 
       /* Smooth Scrolling Behavior */
-     html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-  scroll-padding-top: 80px;
-}
+      html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+        scroll-padding-top: 80px;
+      }
 
-body {
-  overflow-x: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+      body {
+        overflow-x: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-/* Smooth scroll dengan easing custom */
-@media (prefers-reduced-motion: no-preference) {
-  * {
-    scroll-behavior: smooth;
-  }
-}
+      /* Smooth scroll dengan easing custom */
+      @media (prefers-reduced-motion: no-preference) {
+        * {
+          scroll-behavior: smooth;
+        }
+      }
 
       /* Custom Scrollbar - Luxury Style */
       ::-webkit-scrollbar {
@@ -4008,6 +4003,9 @@ body {
         filter: blur(3px);
       }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   </head>
   <body>
     <div id="app">
@@ -4026,279 +4024,324 @@ body {
 
         <!-- Enhanced Flower Animation Container -->
         <div class="flower-container">
-        <!-- Large floating flowers - FIXED POSITIONS -->
-        <div class="flower-large" style="left: 10%; animation-delay: 0s;">
+          <!-- Large floating flowers - FIXED POSITIONS -->
+          <div class="flower-large" style="left: 10%; animation-delay: 0s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-large" style="left: 30%; animation-delay: 1.5s;">
+          </div>
+          <div class="flower-large" style="left: 30%; animation-delay: 1.5s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-large" style="left: 50%; animation-delay: 3s;">
+          </div>
+          <div class="flower-large" style="left: 50%; animation-delay: 3s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-large" style="left: 70%; animation-delay: 4.5s;">
+          </div>
+          <div class="flower-large" style="left: 70%; animation-delay: 4.5s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-large" style="left: 90%; animation-delay: 6s;">
+          </div>
+          <div class="flower-large" style="left: 90%; animation-delay: 6s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
+          </div>
 
-        <!-- Medium floating flowers - FIXED POSITIONS -->
-        <div class="flower-medium" style="left: 5%; animation-delay: 0.5s;">
+          <!-- Medium floating flowers - FIXED POSITIONS -->
+          <div class="flower-medium" style="left: 5%; animation-delay: 0.5s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 20%; animation-delay: 1.8s;">
+          </div>
+          <div class="flower-medium" style="left: 20%; animation-delay: 1.8s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 35%; animation-delay: 3.2s;">
+          </div>
+          <div class="flower-medium" style="left: 35%; animation-delay: 3.2s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 55%; animation-delay: 4.8s;">
+          </div>
+          <div class="flower-medium" style="left: 55%; animation-delay: 4.8s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 70%; animation-delay: 6.4s;">
+          </div>
+          <div class="flower-medium" style="left: 70%; animation-delay: 6.4s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 85%; animation-delay: 8s;">
+          </div>
+          <div class="flower-medium" style="left: 85%; animation-delay: 8s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-medium" style="left: 95%; animation-delay: 9.6s;">
+          </div>
+          <div class="flower-medium" style="left: 95%; animation-delay: 9.6s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
+          </div>
 
-        <!-- Small floating flowers - FIXED POSITIONS -->
-        <div class="flower-small" style="left: 8%; animation-delay: 0.3s;">
+          <!-- Small floating flowers - FIXED POSITIONS -->
+          <div class="flower-small" style="left: 8%; animation-delay: 0.3s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 18%; animation-delay: 1.2s;">
+          </div>
+          <div class="flower-small" style="left: 18%; animation-delay: 1.2s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 28%; animation-delay: 2.1s;">
+          </div>
+          <div class="flower-small" style="left: 28%; animation-delay: 2.1s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 38%; animation-delay: 3s;">
+          </div>
+          <div class="flower-small" style="left: 38%; animation-delay: 3s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 48%; animation-delay: 3.9s;">
+          </div>
+          <div class="flower-small" style="left: 48%; animation-delay: 3.9s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 58%; animation-delay: 4.8s;">
+          </div>
+          <div class="flower-small" style="left: 58%; animation-delay: 4.8s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 68%; animation-delay: 5.7s;">
+          </div>
+          <div class="flower-small" style="left: 68%; animation-delay: 5.7s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 78%; animation-delay: 6.6s;">
+          </div>
+          <div class="flower-small" style="left: 78%; animation-delay: 6.6s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 88%; animation-delay: 7.5s;">
+          </div>
+          <div class="flower-small" style="left: 88%; animation-delay: 7.5s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
-        <div class="flower-small" style="left: 98%; animation-delay: 8.4s;">
+          </div>
+          <div class="flower-small" style="left: 98%; animation-delay: 8.4s">
             <div class="petal-container">
-                <div class="petal petal-1"></div>
-                <div class="petal petal-2"></div>
-                <div class="petal petal-3"></div>
-                <div class="petal petal-4"></div>
-                <div class="petal petal-5"></div>
-                <div class="flower-center"></div>
+              <div class="petal petal-1"></div>
+              <div class="petal petal-2"></div>
+              <div class="petal petal-3"></div>
+              <div class="petal petal-4"></div>
+              <div class="petal petal-5"></div>
+              <div class="flower-center"></div>
             </div>
-        </div>
+          </div>
 
-        <!-- Floating petals - FIXED POSITIONS -->
-        <div class="floating-petal" style="left: 12%; animation-delay: 0.5s; animation-duration: 12s;">
+          <!-- Floating petals - FIXED POSITIONS -->
+          <div
+            class="floating-petal"
+            style="left: 12%; animation-delay: 0.5s; animation-duration: 12s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 24%; animation-delay: 2s; animation-duration: 13s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 24%; animation-delay: 2s; animation-duration: 13s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 36%; animation-delay: 3.5s; animation-duration: 11s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 36%; animation-delay: 3.5s; animation-duration: 11s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 48%; animation-delay: 5s; animation-duration: 14s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 48%; animation-delay: 5s; animation-duration: 14s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 60%; animation-delay: 6.5s; animation-duration: 12.5s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 60%; animation-delay: 6.5s; animation-duration: 12.5s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 72%; animation-delay: 8s; animation-duration: 13.5s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 72%; animation-delay: 8s; animation-duration: 13.5s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 84%; animation-delay: 9.5s; animation-duration: 11.5s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 84%; animation-delay: 9.5s; animation-duration: 11.5s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 15%; animation-delay: 1.5s; animation-duration: 15s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 15%; animation-delay: 1.5s; animation-duration: 15s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 27%; animation-delay: 4s; animation-duration: 10s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 27%; animation-delay: 4s; animation-duration: 10s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 42%; animation-delay: 7s; animation-duration: 14.5s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 42%; animation-delay: 7s; animation-duration: 14.5s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 54%; animation-delay: 2.5s; animation-duration: 12s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 54%; animation-delay: 2.5s; animation-duration: 12s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 66%; animation-delay: 5.5s; animation-duration: 13s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 66%; animation-delay: 5.5s; animation-duration: 13s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 78%; animation-delay: 8.5s; animation-duration: 11s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 78%; animation-delay: 8.5s; animation-duration: 11s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 90%; animation-delay: 3s; animation-duration: 15s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 90%; animation-delay: 3s; animation-duration: 15s"
+          >
             <div class="petal-shape"></div>
-        </div>
-        <div class="floating-petal" style="left: 95%; animation-delay: 6s; animation-duration: 12.5s;">
+          </div>
+          <div
+            class="floating-petal"
+            style="left: 95%; animation-delay: 6s; animation-duration: 12.5s"
+          >
             <div class="petal-shape"></div>
+          </div>
         </div>
-    </div>
 
         <div class="container text-center relative z-10 px-4">
           <div class="fade-in">
@@ -4310,7 +4353,7 @@ body {
           </div>
 
           <!-- Wedding Photo Section -->
-          <div class="wedding-photo-container ">
+          <div class="wedding-photo-container">
             <div class="photo-frame">
               <div class="photo-frame-inner">
                 <img
@@ -6773,12 +6816,14 @@ body {
                       Jln Dusun Krajan RT.04/RW.04, Desa Temenggungan,
                       Kec.Krejengan, Kab.Probolinggo
                     </p>
-                    <a href="https://maps.app.goo.gl/RwndMJwjzTGnghPh8"><button
-                      class="btn-primary mt-4 font-corsiva"
-                      @click="showMap = true"
+                    <a href="https://maps.app.goo.gl/RwndMJwjzTGnghPh8"
+                      ><button
+                        class="btn-primary mt-4 font-corsiva"
+                        @click="showMap = true"
+                      >
+                        <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
+                      </button></a
                     >
-                      <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
-                    </button></a>
                   </div>
                 </div>
               </div>
@@ -7059,12 +7104,14 @@ body {
                       Jln Dusun Krajan RT.04/RW.04, Desa Temenggungan,
                       Kec.Krejengan, Kab.Probolinggo
                     </p>
-                    <a href="https://maps.app.goo.gl/RwndMJwjzTGnghPh8"><button
-                      class="btn-primary mt-4 font-corsiva"
-                      @click="showMap = true"
+                    <a href="https://maps.app.goo.gl/RwndMJwjzTGnghPh8"
+                      ><button
+                        class="btn-primary mt-4 font-corsiva"
+                        @click="showMap = true"
+                      >
+                        <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
+                      </button></a
                     >
-                      <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
-                    </button></a>
                   </div>
                 </div>
               </div>
@@ -7345,12 +7392,14 @@ body {
                       Jln Bandungan RT.13/RW.03, Desa Satreyan, Kec.Maron,
                       Kab.Probolinggo
                     </p>
-                    <a href="https://maps.app.goo.gl/3ZvPhL3mCyH5Dssy7?g_st=aw"><button
-                      class="btn-primary mt-4 font-corsiva"
-                      @click="showMap = true"
+                    <a href="https://maps.app.goo.gl/3ZvPhL3mCyH5Dssy7?g_st=aw"
+                      ><button
+                        class="btn-primary mt-4 font-corsiva"
+                        @click="showMap = true"
+                      >
+                        <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
+                      </button></a
                     >
-                      <i class="fas fa-map-marker-alt mr-2"></i> Lihat Peta
-                    </button></a>
                   </div>
                 </div>
               </div>
@@ -8931,7 +8980,7 @@ body {
                 Ucapan Anda telah terkirim
               </p>
               <button
-                onclick="closeSuccessModal()"
+                @click="closeSuccessModal"
                 class="btn-primary mt-6 font-corsiva"
               >
                 <i class="fas fa-check mr-2"></i> OK
@@ -9723,17 +9772,17 @@ body {
                 class="flex justify-center items-center gap-5 mb-8 couple-names-glow"
               >
                 <h2
-                  class="font-priscilla-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
+                  class="font-corsiva-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
                 >
                   Bayhaki
                 </h2>
                 <p
-                  class="font-priscilla-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
+                  class="font-corsiva-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
                 >
                   &
                 </p>
                 <h2
-                  class="font-priscilla-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
+                  class="font-corsiva-bold-italic text-3xl md:text-6xl text-pink-800 drop-shadow-lg"
                 >
                   Ilus
                 </h2>
@@ -10374,35 +10423,39 @@ body {
     <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 
     <!-- Main App Script -->
-    <script>
+    <script type="module">
       // Global functions untuk copy button
+
       function getURLParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
 
-// Fungsi untuk decode dan format nama
-function formatRecipientName(name) {
-    if (!name) return 'Tamu Undangan';
-    
-    // Decode URL encoding (+ menjadi spasi, %20 menjadi spasi, dll)
-    let decoded = decodeURIComponent(name.replace(/\+/g, ' '));
-    
-    // Capitalize setiap kata
-    return decoded.split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
-}
+      // Fungsi untuk decode dan format nama
+      function formatRecipientName(name) {
+        if (!name) return "Tamu Undangan";
 
-// Set nama penerima saat halaman load
-document.addEventListener('DOMContentLoaded', function() {
-    const recipientName = getURLParameter('to');
-    const nameElement = document.querySelector('.recipient-name');
-    
-    if (nameElement) {
-        nameElement.textContent = formatRecipientName(recipientName);
-    }
-});
+        // Decode URL encoding (+ menjadi spasi, %20 menjadi spasi, dll)
+        let decoded = decodeURIComponent(name.replace(/\+/g, " "));
+
+        // Capitalize setiap kata
+        return decoded
+          .split(" ")
+          .map(
+            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          )
+          .join(" ");
+      }
+
+      // Set nama penerima saat halaman load
+      document.addEventListener("DOMContentLoaded", function () {
+        const recipientName = getURLParameter("to");
+        const nameElement = document.querySelector(".recipient-name");
+
+        if (nameElement) {
+          nameElement.textContent = formatRecipientName(recipientName);
+        }
+      });
       function copyAccount(text, button) {
         const tempInput = document.createElement("input");
         tempInput.value = text;
@@ -10500,6 +10553,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
 
+      // ============ FIREBASE CONFIGURATION ============
+      // GANTI dengan config Anda dari Firebase Console
+      const firebaseConfig = {
+        apiKey: import.meta.env.VITE_API_KEY,
+        authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+        databaseURL: import.meta.env.VITE_DATABASE_URL,
+        projectId: import.meta.env.VITE_PROJECT_ID,
+        storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+        messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+        appId: import.meta.env.VITE_APP_ID,
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+      // ============ END FIREBASE CONFIGURATION ============
+
       // Vue Instance
       new Vue({
         el: "#app",
@@ -10526,8 +10596,27 @@ document.addEventListener('DOMContentLoaded', function() {
           this.lockScrollOnLoad();
           this.loadMessages();
           this.setupFormHandlers();
+
+          database.ref("rsvp").on("value", (snapshot) => {
+            if (snapshot.exists()) {
+              const messages = [];
+              snapshot.forEach((childSnapshot) => {
+                messages.push(childSnapshot.val());
+              });
+              messages.sort((a, b) => b.timestamp - a.timestamp);
+              this.messages = messages;
+              this.renderMessages();
+            }
+          });
         },
         methods: {
+          closeSuccessModal() {
+            const modal = document.getElementById("successModal");
+            if (modal) {
+              modal.style.display = "none";
+            }
+          },
+
           lockScrollOnLoad() {
             // Lock scroll saat halaman pertama kali dibuka
             document.documentElement.classList.add("no-scroll");
@@ -10700,30 +10789,17 @@ document.addEventListener('DOMContentLoaded', function() {
               attendance: attendance,
               guests: guestCount,
               message: message,
-              timestamp: new Date().toISOString(),
+              timestamp: Date.now(),
               id: Date.now().toString(),
             };
 
             try {
-              if (window.storage && window.storage.set) {
-                await window.storage.set(
-                  `rsvp:${rsvpData.id}`,
-                  JSON.stringify(rsvpData),
-                  true
-                );
-              } else {
-                // Fallback ke localStorage
-                const existing = JSON.parse(
-                  localStorage.getItem("rsvp_messages") || "[]"
-                );
-                existing.unshift(rsvpData);
-                localStorage.setItem("rsvp_messages", JSON.stringify(existing));
-              }
+              // Simpan ke Firebase
+              await database.ref("rsvp/" + rsvpData.id).set(rsvpData);
 
               this.showSuccessModal();
               form.reset();
               this.showGuestsField = false;
-              await this.loadMessages();
 
               setTimeout(() => {
                 document.getElementById("messagesContainer").scrollIntoView({
@@ -10733,10 +10809,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }, 1000);
             } catch (error) {
               console.error("Error saving RSVP:", error);
-              this.messages.unshift(rsvpData);
-              this.showSuccessModal();
-              form.reset();
-              this.showGuestsField = false;
+              alert("Gagal mengirim ucapan. Silakan coba lagi.");
             }
           },
 
@@ -10744,56 +10817,44 @@ document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById("messagesContainer");
 
             try {
-              if (window.storage && window.storage.list) {
-                const result = await window.storage.list("rsvp:", true);
+              // Load dari Firebase
+              const snapshot = await database
+                .ref("rsvp")
+                .orderByChild("timestamp")
+                .once("value");
 
-                if (!result || !result.keys || result.keys.length === 0) {
-                  this.messages = [];
-                  if (container) {
-                    container.innerHTML = `
-                                <div class="empty-state">
-                                    <i class="fas fa-comments"></i>
-                                    <p class="font-corsiva text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
-                                </div>
-                            `;
-                  }
-                  return;
+              if (!snapshot.exists()) {
+                this.messages = [];
+                if (container) {
+                  container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p class="font-corsiva text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
+          </div>
+        `;
                 }
-
-                const messages = [];
-                for (const key of result.keys) {
-                  try {
-                    const data = await window.storage.get(key, true);
-                    if (data && data.value) {
-                      const messageData = JSON.parse(data.value);
-                      messages.push(messageData);
-                    }
-                  } catch (e) {
-                    console.error("Error loading message:", e);
-                  }
-                }
-
-                messages.sort(
-                  (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-                );
-                this.messages = messages;
-              } else {
-                // Fallback ke localStorage
-                const stored = localStorage.getItem("rsvp_messages");
-                this.messages = stored ? JSON.parse(stored) : [];
+                return;
               }
 
+              const messages = [];
+              snapshot.forEach((childSnapshot) => {
+                messages.push(childSnapshot.val());
+              });
+
+              // Sort dari terbaru
+              messages.sort((a, b) => b.timestamp - a.timestamp);
+              this.messages = messages;
               this.renderMessages();
             } catch (error) {
               console.error("Error loading messages:", error);
               this.messages = [];
               if (container) {
                 container.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <p class="font-corsiva text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
-                        </div>
-                    `;
+        <div class="empty-state">
+          <i class="fas fa-exclamation-circle"></i>
+          <p class="font-corsiva text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
+        </div>
+      `;
               }
             }
           },
