@@ -10556,8 +10556,22 @@
     <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
 
     <!-- Main App Script -->
-    <script type="module">
-      // Global functions untuk copy button
+    <script>
+      // ============ FIREBASE CONFIGURATION ============
+      const firebaseConfig = {
+        apiKey: "AIzaSyC61QEtQwgaV72Slkw7FyElne3ca0wFm_g",
+        authDomain: "wedding-bayhaki-ilus.firebaseapp.com",
+        databaseURL: "https://wedding-bayhaki-ilus-default-rtdb.firebaseio.com",
+        projectId: "wedding-bayhaki-ilus",
+        storageBucket: "wedding-bayhaki-ilus.firebasestorage.app",
+        messagingSenderId: "886930114616",
+        appId: "1:886930114616:web:514ae4fcf68f4575cb3ecd",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      // ============ GLOBAL FUNCTIONS ============
       function getURLParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
@@ -10672,20 +10686,6 @@
         }
       }
 
-      // ============ FIREBASE CONFIGURATION ============
-      const firebaseConfig = {
-        apiKey: "AIzaSyC61QEtQwgaV72Slkw7FyElne3ca0wFm_g",
-        authDomain: "wedding-bayhaki-ilus.firebaseapp.com",
-        databaseURL: "https://wedding-bayhaki-ilus-default-rtdb.firebaseio.com",
-        projectId: "wedding-bayhaki-ilus",
-        storageBucket: "wedding-bayhaki-ilus.firebasestorage.app",
-        messagingSenderId: "886930114616",
-        appId: "1:886930114616:web:514ae4fcf68f4575cb3ecd",
-      };
-
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
-
       // ============ VUE INSTANCE ============
       new Vue({
         el: "#app",
@@ -10696,8 +10696,10 @@
           selectedImage: "",
           isPlaying: false,
           invitationOpened: false,
-          scrollPosition: 0, // ✅ TAMBAHAN
-          preventScroll: null, // ✅ TAMBAHAN
+          scrollPosition: 0,
+          preventScroll: null,
+          wasPausedByVisibility: false, // ✅ TAMBAHAN untuk visibility
+          wasPausedByBlur: false, // ✅ TAMBAHAN untuk blur/focus
           countdown: {
             days: 0,
             hours: 0,
@@ -10710,11 +10712,12 @@
         mounted() {
           this.initCountdown();
           this.initScrollReveal();
-          this.lockScrollOnLoad(); // ✅ PINDAH SEBELUM initSmoothScroll
+          this.lockScrollOnLoad();
           this.initSmoothScroll();
           this.loadMessages();
           this.setupFormHandlers();
           this.setupButtons();
+          this.setupVisibilityChange(); // ✅ TAMBAHAN
 
           database.ref("rsvp").on("value", (snapshot) => {
             if (snapshot.exists()) {
@@ -10729,8 +10732,63 @@
           });
         },
         methods: {
+          // ✅ NEW METHOD: Setup Visibility Change
+          setupVisibilityChange() {
+            const audio = this.$refs.backgroundMusic;
+            if (!audio) return;
+
+            // Handle tab visibility (switch tab)
+            document.addEventListener("visibilitychange", () => {
+              if (document.hidden) {
+                // Tab hidden - pause music
+                if (this.isPlaying && !audio.paused) {
+                  audio.pause();
+                  this.wasPausedByVisibility = true;
+                  console.log("🎵 Music paused (tab hidden)");
+                }
+              } else {
+                // Tab visible - resume music
+                if (this.wasPausedByVisibility && this.isPlaying) {
+                  audio
+                    .play()
+                    .then(() => {
+                      this.wasPausedByVisibility = false;
+                      console.log("🎵 Music resumed (tab visible)");
+                    })
+                    .catch((error) => {
+                      console.log("Resume prevented:", error);
+                      this.wasPausedByVisibility = false;
+                    });
+                }
+              }
+            });
+
+            // Handle window blur/focus (switch window/minimize)
+            window.addEventListener("blur", () => {
+              if (this.isPlaying && !audio.paused) {
+                audio.pause();
+                this.wasPausedByBlur = true;
+                console.log("🎵 Music paused (window blur)");
+              }
+            });
+
+            window.addEventListener("focus", () => {
+              if (this.wasPausedByBlur && this.isPlaying) {
+                audio
+                  .play()
+                  .then(() => {
+                    this.wasPausedByBlur = false;
+                    console.log("🎵 Music resumed (window focus)");
+                  })
+                  .catch((error) => {
+                    console.log("Resume prevented:", error);
+                    this.wasPausedByBlur = false;
+                  });
+              }
+            });
+          },
+
           setupButtons() {
-            // ✅ Tambah delay untuk ensure DOM ready
             this.$nextTick(() => {
               // Setup Open Invitation Button
               const openBtn = document.getElementById("openInvitationBtn");
@@ -10752,7 +10810,7 @@
                   "touchend",
                   this.handleOpenInvitation.bind(this),
                   { passive: false }
-                ); // ✅ TAMBAHAN
+                );
               }
 
               // Setup Music Player Button
@@ -10782,19 +10840,15 @@
             event.preventDefault();
             event.stopPropagation();
 
-            console.log("Button clicked!", event.type); // ✅ Show event type
+            console.log("Button clicked!", event.type);
 
             if (!this.invitationOpened) {
               this.invitationOpened = true;
               console.log("Opening invitation...");
 
-              // Unlock scroll
               this.unlockScroll();
-
-              // Play music
               this.playMusicWithUserInteraction();
 
-              // Scroll to couple section
               setTimeout(() => {
                 const coupleSection = document.getElementById("couple");
                 if (coupleSection) {
@@ -10809,7 +10863,7 @@
                     behavior: "smooth",
                   });
                 }
-              }, 300); // ✅ Kurangi delay dari 500ms ke 300ms
+              }, 300);
             }
 
             return false;
@@ -10818,11 +10872,9 @@
           lockScrollOnLoad() {
             console.log("Locking scroll...");
 
-            // Save current scroll position
             this.scrollPosition =
               window.pageYOffset || document.documentElement.scrollTop;
 
-            // Apply styles to html
             const html = document.documentElement;
             html.style.overflow = "hidden";
             html.style.position = "fixed";
@@ -10830,10 +10882,9 @@
             html.style.width = "100%";
             html.style.height = "100vh";
             html.style.touchAction = "none";
-            html.style.overscrollBehavior = "none"; // ✅ TAMBAHAN
+            html.style.overscrollBehavior = "none";
             html.classList.add("no-scroll");
 
-            // Apply styles to body
             const body = document.body;
             body.style.overflow = "hidden";
             body.style.position = "fixed";
@@ -10841,16 +10892,14 @@
             body.style.width = "100%";
             body.style.height = "100vh";
             body.style.touchAction = "none";
-            body.style.overscrollBehavior = "none"; // ✅ TAMBAHAN
+            body.style.overscrollBehavior = "none";
             body.classList.add("no-scroll");
 
-            // Lock content overlay
             const contentOverlay = document.getElementById("contentOverlay");
             if (contentOverlay) {
               contentOverlay.classList.add("content-locked");
             }
 
-            // Prevent all scroll events
             this.preventScroll = (e) => {
               if (!this.invitationOpened) {
                 e.preventDefault();
@@ -10859,7 +10908,6 @@
               }
             };
 
-            // Add event listeners
             window.addEventListener("scroll", this.preventScroll, {
               passive: false,
             });
@@ -10872,8 +10920,6 @@
             document.addEventListener("touchmove", this.preventScroll, {
               passive: false,
             });
-
-            // ✅ TAMBAHAN: Prevent gestures
             document.addEventListener("gesturestart", this.preventScroll, {
               passive: false,
             });
@@ -10888,7 +10934,6 @@
           unlockScroll() {
             console.log("Unlocking scroll...");
 
-            // Remove styles from html
             const html = document.documentElement;
             html.style.overflow = "";
             html.style.position = "";
@@ -10896,10 +10941,9 @@
             html.style.width = "";
             html.style.height = "";
             html.style.touchAction = "";
-            html.style.overscrollBehavior = ""; // ✅ TAMBAHAN
+            html.style.overscrollBehavior = "";
             html.classList.remove("no-scroll");
 
-            // Remove styles from body
             const body = document.body;
             body.style.overflow = "";
             body.style.position = "";
@@ -10907,27 +10951,24 @@
             body.style.width = "";
             body.style.height = "";
             body.style.touchAction = "";
-            body.style.overscrollBehavior = ""; // ✅ TAMBAHAN
+            body.style.overscrollBehavior = "";
             body.classList.remove("no-scroll");
 
-            // Restore scroll position
             window.scrollTo(0, this.scrollPosition);
 
-            // Unlock content overlay
             const contentOverlay = document.getElementById("contentOverlay");
             if (contentOverlay) {
               contentOverlay.classList.remove("content-locked");
             }
 
-            // Remove event listeners
             if (this.preventScroll) {
               window.removeEventListener("scroll", this.preventScroll);
               window.removeEventListener("wheel", this.preventScroll);
               window.removeEventListener("touchmove", this.preventScroll);
               document.removeEventListener("touchmove", this.preventScroll);
-              document.removeEventListener("gesturestart", this.preventScroll); // ✅ TAMBAHAN
-              document.removeEventListener("gesturechange", this.preventScroll); // ✅ TAMBAHAN
-              document.removeEventListener("gestureend", this.preventScroll); // ✅ TAMBAHAN
+              document.removeEventListener("gesturestart", this.preventScroll);
+              document.removeEventListener("gesturechange", this.preventScroll);
+              document.removeEventListener("gestureend", this.preventScroll);
             }
           },
 
@@ -11130,11 +11171,11 @@
                 this.messages = [];
                 if (container) {
                   container.innerHTML = `
-              <div class="empty-state">
-                <i class="fas fa-comments"></i>
-                <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
-              </div>
-            `;
+            <div class="empty-state">
+              <i class="fas fa-comments"></i>
+              <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
+            </div>
+          `;
                 }
                 return;
               }
@@ -11152,11 +11193,11 @@
               this.messages = [];
               if (container) {
                 container.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-exclamation-circle"></i>
-              <p class="font-garamond-semibold text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
-            </div>
-          `;
+          <div class="empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p class="font-garamond-semibold text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
+          </div>
+        `;
               }
             }
           },
@@ -11167,11 +11208,11 @@
 
             if (this.messages.length === 0) {
               container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-comments"></i>
-            <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
-          </div>
-        `;
+        <div class="empty-state">
+          <i class="fas fa-comments"></i>
+          <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
+        </div>
+      `;
             } else {
               container.innerHTML = this.messages
                 .map((msg) => this.createMessageHTML(msg))
@@ -11186,31 +11227,31 @@
             const initial = data.name.charAt(0).toUpperCase();
 
             return `
-        <div class="message-bubble">
-          <div class="flex items-start">
-            <div class="message-avatar">${initial}</div>
-            <div class="flex-1">
-              <div class="flex items-center justify-between mb-2">
-                <div>
-                  <h4 class="font-garamond-bold text-lg text-pink-800">
-                    ${this.escapeHtml(data.name)}
-                    ${attendanceBadge}
-                  </h4>
-                  <p class="text-xs text-pink-500 font-garamond-italic">${formattedDate}</p>
-                </div>
+      <div class="message-bubble">
+        <div class="flex items-start">
+          <div class="message-avatar">${initial}</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-2">
+              <div>
+                <h4 class="font-garamond-bold text-lg text-pink-800">
+                  ${this.escapeHtml(data.name)}
+                  ${attendanceBadge}
+                </h4>
+                <p class="text-xs text-pink-500 font-garamond-italic">${formattedDate}</p>
               </div>
-              <p class="text-pink-700 font-garamond-reguler leading-relaxed">${this.escapeHtml(
-                data.message
-              )}</p>
-              ${
-                data.guests > 0
-                  ? `<p class="text-sm text-pink-500 mt-2 font-garamond-reguler"><i class="fas fa-users mr-1"></i> ${data.guests} orang</p>`
-                  : ""
-              }
             </div>
+            <p class="text-pink-700 font-garamond-reguler leading-relaxed">${this.escapeHtml(
+              data.message
+            )}</p>
+            ${
+              data.guests > 0
+                ? `<p class="text-sm text-pink-500 mt-2 font-garamond-reguler"><i class="fas fa-users mr-1"></i> ${data.guests} orang</p>`
+                : ""
+            }
           </div>
         </div>
-      `;
+      </div>
+    `;
           },
 
           getAttendanceBadge(attendance) {
@@ -11302,9 +11343,8 @@
           },
 
           initSmoothScroll() {
-            // ✅ HANYA jalankan jika invitation sudah dibuka
             window.addEventListener("scroll", () => {
-              if (!this.invitationOpened) return; // ✅ TAMBAHAN
+              if (!this.invitationOpened) return;
 
               const scrollProgress = document.getElementById("scrollProgress");
               const windowHeight =
@@ -11341,10 +11381,9 @@
               });
             }
 
-            // ✅ SKIP anchor links untuk openInvitationBtn
             document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
               anchor.addEventListener("click", function (e) {
-                if (this.id === "openInvitationBtn") return; // ✅ TAMBAHAN
+                if (this.id === "openInvitationBtn") return;
 
                 e.preventDefault();
                 const target = document.querySelector(
@@ -11411,7 +11450,6 @@
           if (this.countdownInterval) {
             clearInterval(this.countdownInterval);
           }
-          // ✅ TAMBAHAN: Clean up event listeners
           if (this.preventScroll) {
             window.removeEventListener("scroll", this.preventScroll);
             window.removeEventListener("wheel", this.preventScroll);
