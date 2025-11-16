@@ -3987,21 +3987,130 @@
           font-size: 20px;
         }
       }
+      /* Enhanced scroll lock for mobile */
+      /* ========== ENHANCED SCROLL LOCK FOR MOBILE ========== */
 
+      /* Scroll lock untuk HTML dan Body */
       html.no-scroll,
       body.no-scroll {
         overflow: hidden !important;
-        height: 100vh;
-        position: fixed;
-        width: 100%;
+        position: fixed !important;
+        width: 100% !important;
+        height: 100vh !important;
+        top: 0 !important;
+        left: 0 !important;
+        touch-action: none !important;
+        -webkit-overflow-scrolling: none !important;
+        overscroll-behavior: none !important;
       }
 
-      /* Content locked overlay enhancement */
+      /* Prevent scroll on all elements when locked */
+      html.no-scroll *,
+      body.no-scroll * {
+        overscroll-behavior: none !important;
+      }
+
+      /* Content locked overlay - section yang di-blur */
       .content-locked {
-        pointer-events: none;
-        user-select: none;
-        opacity: 0.5;
-        filter: blur(3px);
+        pointer-events: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        opacity: 0.5 !important;
+        filter: blur(3px) !important;
+        position: relative !important;
+        overflow: hidden !important;
+        touch-action: none !important;
+      }
+
+      /* Hero section harus tetap bisa diakses */
+      .hero-section {
+        position: relative;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+        touch-action: auto !important;
+      }
+
+      /* Ensure button is clickable and touchable */
+      #openInvitationBtn {
+        position: relative !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: rgba(240, 98, 146, 0.3) !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        touch-action: manipulation !important;
+        display: inline-block !important;
+      }
+
+      /* Music player harus tetap accessible */
+      .music-player {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 999999 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: rgba(240, 98, 146, 0.3) !important;
+        -webkit-touch-callout: none !important;
+        touch-action: manipulation !important;
+      }
+
+      /* Scroll progress bar tetap visible */
+      .scroll-progress {
+        z-index: 99998 !important;
+        pointer-events: none !important;
+      }
+
+      /* Back to top button */
+      .back-to-top {
+        z-index: 99997 !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+      }
+
+      /* Prevent pull-to-refresh on mobile */
+      body {
+        overscroll-behavior-y: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Fix for iOS Safari */
+      @supports (-webkit-touch-callout: none) {
+        html.no-scroll,
+        body.no-scroll {
+          position: fixed !important;
+          overflow: hidden !important;
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+
+      /* Fix for Android Chrome */
+      @media screen and (max-width: 768px) {
+        html.no-scroll,
+        body.no-scroll {
+          position: fixed !important;
+          overflow: hidden !important;
+          width: 100vw !important;
+          height: 100vh !important;
+          -webkit-overflow-scrolling: none !important;
+        }
+
+        #openInvitationBtn {
+          min-height: 48px !important;
+          min-width: 200px !important;
+          touch-action: manipulation !important;
+        }
+
+        .music-player {
+          min-height: 48px !important;
+          min-width: 48px !important;
+          touch-action: manipulation !important;
+        }
       }
     </style>
     <!-- Firebase SDK -->
@@ -7495,7 +7604,7 @@
                   link dibawah ini
                 </p>
                 <a
-                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  href="#"
                   target="_blank"
                   class="btn-primary font-garamond-bold"
                   style="position: relative; z-index: 2"
@@ -10424,6 +10533,7 @@
       <div
         class="music-player"
         :class="{ 'playing': isPlaying }"
+        id="musicPlayerBtn"
         @click="toggleMusic"
       >
         <div v-if="isPlaying" class="music-waves"></div>
@@ -10448,20 +10558,14 @@
     <!-- Main App Script -->
     <script type="module">
       // Global functions untuk copy button
-
       function getURLParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
       }
 
-      // Fungsi untuk decode dan format nama
       function formatRecipientName(name) {
         if (!name) return "Tamu Undangan";
-
-        // Decode URL encoding (+ menjadi spasi, %20 menjadi spasi, dll)
         let decoded = decodeURIComponent(name.replace(/\+/g, " "));
-
-        // Capitalize setiap kata
         return decoded
           .split(" ")
           .map(
@@ -10470,22 +10574,20 @@
           .join(" ");
       }
 
-      // Set nama penerima saat halaman load
       document.addEventListener("DOMContentLoaded", function () {
         const recipientName = getURLParameter("to");
         const nameElement = document.querySelector(".recipient-name");
-
         if (nameElement) {
           nameElement.textContent = formatRecipientName(recipientName);
         }
       });
+
       function copyAccount(text, button) {
         const tempInput = document.createElement("input");
         tempInput.value = text;
         tempInput.style.position = "fixed";
         tempInput.style.opacity = "0";
         document.body.appendChild(tempInput);
-
         tempInput.select();
         tempInput.setSelectionRange(0, 99999);
 
@@ -10495,9 +10597,7 @@
           button.innerHTML = '<i class="fas fa-check mr-2"></i>Tersalin!';
           button.style.background =
             "linear-gradient(135deg, #81c784 0%, #66bb6a 100%)";
-
           createCoinBurst(button);
-
           setTimeout(() => {
             button.innerHTML = originalHTML;
             button.style.background = "";
@@ -10505,7 +10605,6 @@
         } catch (err) {
           console.error("Copy failed:", err);
         }
-
         document.body.removeChild(tempInput);
       }
 
@@ -10555,10 +10654,7 @@
                 opacity: 0,
               },
             ],
-            {
-              duration: 1000,
-              easing: "cubic-bezier(0.19, 1, 0.22, 1)",
-            }
+            { duration: 1000, easing: "cubic-bezier(0.19, 1, 0.22, 1)" }
           );
 
           setTimeout(() => {
@@ -10577,7 +10673,6 @@
       }
 
       // ============ FIREBASE CONFIGURATION ============
-      // GANTI dengan config Anda dari Firebase Console
       const firebaseConfig = {
         apiKey: import.meta.env.VITE_API_KEY,
         authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -10588,12 +10683,10 @@
         appId: import.meta.env.VITE_APP_ID,
       };
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const database = firebase.database();
-      // ============ END FIREBASE CONFIGURATION ============
 
-      // Vue Instance
+      // ============ VUE INSTANCE ============
       new Vue({
         el: "#app",
         data: {
@@ -10603,6 +10696,8 @@
           selectedImage: "",
           isPlaying: false,
           invitationOpened: false,
+          scrollPosition: 0, // ✅ TAMBAHAN
+          preventScroll: null, // ✅ TAMBAHAN
           countdown: {
             days: 0,
             hours: 0,
@@ -10615,11 +10710,11 @@
         mounted() {
           this.initCountdown();
           this.initScrollReveal();
+          this.lockScrollOnLoad(); // ✅ PINDAH SEBELUM initSmoothScroll
           this.initSmoothScroll();
-          this.lockScrollOnLoad();
           this.loadMessages();
           this.setupFormHandlers();
-          this.setupOpenInvitationButton();
+          this.setupButtons();
 
           database.ref("rsvp").on("value", (snapshot) => {
             if (snapshot.exists()) {
@@ -10634,54 +10729,274 @@
           });
         },
         methods: {
-          setupOpenInvitationButton() {
-            const openBtn = document.getElementById("openInvitationBtn");
-            if (openBtn) {
-              // Hapus event listener lama jika ada
-              openBtn.removeEventListener("click", this.handleOpenInvitation);
-              openBtn.removeEventListener(
-                "touchend",
-                this.handleOpenInvitation
-              );
+          setupButtons() {
+            // ✅ Tambah delay untuk ensure DOM ready
+            this.$nextTick(() => {
+              // Setup Open Invitation Button
+              const openBtn = document.getElementById("openInvitationBtn");
+              if (openBtn) {
+                const newBtn = openBtn.cloneNode(true);
+                openBtn.parentNode.replaceChild(newBtn, openBtn);
 
-              // Tambah event listener baru untuk click dan touch
-              openBtn.addEventListener(
-                "click",
-                this.handleOpenInvitation.bind(this),
-                { passive: false }
-              );
-              openBtn.addEventListener(
-                "touchend",
-                this.handleOpenInvitation.bind(this),
-                { passive: false }
-              );
-            }
+                newBtn.addEventListener(
+                  "click",
+                  this.handleOpenInvitation.bind(this),
+                  { passive: false }
+                );
+                newBtn.addEventListener(
+                  "touchstart",
+                  this.handleOpenInvitation.bind(this),
+                  { passive: false }
+                );
+                newBtn.addEventListener(
+                  "touchend",
+                  this.handleOpenInvitation.bind(this),
+                  { passive: false }
+                ); // ✅ TAMBAHAN
+              }
+
+              // Setup Music Player Button
+              const musicBtn = document.getElementById("musicPlayerBtn");
+              if (musicBtn) {
+                const newMusicBtn = musicBtn.cloneNode(true);
+                musicBtn.parentNode.replaceChild(newMusicBtn, musicBtn);
+
+                newMusicBtn.addEventListener(
+                  "click",
+                  this.toggleMusic.bind(this),
+                  { passive: false }
+                );
+                newMusicBtn.addEventListener(
+                  "touchstart",
+                  (e) => {
+                    e.preventDefault();
+                    this.toggleMusic();
+                  },
+                  { passive: false }
+                );
+              }
+            });
           },
+
           handleOpenInvitation(event) {
             event.preventDefault();
             event.stopPropagation();
 
+            console.log("Button clicked!", event.type); // ✅ Show event type
+
             if (!this.invitationOpened) {
               this.invitationOpened = true;
+              console.log("Opening invitation...");
 
-              // Unlock scroll dengan force remove
+              // Unlock scroll
               this.unlockScroll();
 
-              // Play music dengan user interaction
+              // Play music
               this.playMusicWithUserInteraction();
 
-              // Smooth scroll ke section couple
+              // Scroll to couple section
               setTimeout(() => {
                 const coupleSection = document.getElementById("couple");
                 if (coupleSection) {
-                  coupleSection.scrollIntoView({
+                  const yOffset = 0;
+                  const y =
+                    coupleSection.getBoundingClientRect().top +
+                    window.pageYOffset +
+                    yOffset;
+
+                  window.scrollTo({
+                    top: y,
                     behavior: "smooth",
-                    block: "start",
                   });
                 }
-              }, 300);
+              }, 300); // ✅ Kurangi delay dari 500ms ke 300ms
+            }
+
+            return false;
+          },
+
+          lockScrollOnLoad() {
+            console.log("Locking scroll...");
+
+            // Save current scroll position
+            this.scrollPosition =
+              window.pageYOffset || document.documentElement.scrollTop;
+
+            // Apply styles to html
+            const html = document.documentElement;
+            html.style.overflow = "hidden";
+            html.style.position = "fixed";
+            html.style.top = `-${this.scrollPosition}px`;
+            html.style.width = "100%";
+            html.style.height = "100vh";
+            html.style.touchAction = "none";
+            html.style.overscrollBehavior = "none"; // ✅ TAMBAHAN
+            html.classList.add("no-scroll");
+
+            // Apply styles to body
+            const body = document.body;
+            body.style.overflow = "hidden";
+            body.style.position = "fixed";
+            body.style.top = `-${this.scrollPosition}px`;
+            body.style.width = "100%";
+            body.style.height = "100vh";
+            body.style.touchAction = "none";
+            body.style.overscrollBehavior = "none"; // ✅ TAMBAHAN
+            body.classList.add("no-scroll");
+
+            // Lock content overlay
+            const contentOverlay = document.getElementById("contentOverlay");
+            if (contentOverlay) {
+              contentOverlay.classList.add("content-locked");
+            }
+
+            // Prevent all scroll events
+            this.preventScroll = (e) => {
+              if (!this.invitationOpened) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+              }
+            };
+
+            // Add event listeners
+            window.addEventListener("scroll", this.preventScroll, {
+              passive: false,
+            });
+            window.addEventListener("wheel", this.preventScroll, {
+              passive: false,
+            });
+            window.addEventListener("touchmove", this.preventScroll, {
+              passive: false,
+            });
+            document.addEventListener("touchmove", this.preventScroll, {
+              passive: false,
+            });
+
+            // ✅ TAMBAHAN: Prevent gestures
+            document.addEventListener("gesturestart", this.preventScroll, {
+              passive: false,
+            });
+            document.addEventListener("gesturechange", this.preventScroll, {
+              passive: false,
+            });
+            document.addEventListener("gestureend", this.preventScroll, {
+              passive: false,
+            });
+          },
+
+          unlockScroll() {
+            console.log("Unlocking scroll...");
+
+            // Remove styles from html
+            const html = document.documentElement;
+            html.style.overflow = "";
+            html.style.position = "";
+            html.style.top = "";
+            html.style.width = "";
+            html.style.height = "";
+            html.style.touchAction = "";
+            html.style.overscrollBehavior = ""; // ✅ TAMBAHAN
+            html.classList.remove("no-scroll");
+
+            // Remove styles from body
+            const body = document.body;
+            body.style.overflow = "";
+            body.style.position = "";
+            body.style.top = "";
+            body.style.width = "";
+            body.style.height = "";
+            body.style.touchAction = "";
+            body.style.overscrollBehavior = ""; // ✅ TAMBAHAN
+            body.classList.remove("no-scroll");
+
+            // Restore scroll position
+            window.scrollTo(0, this.scrollPosition);
+
+            // Unlock content overlay
+            const contentOverlay = document.getElementById("contentOverlay");
+            if (contentOverlay) {
+              contentOverlay.classList.remove("content-locked");
+            }
+
+            // Remove event listeners
+            if (this.preventScroll) {
+              window.removeEventListener("scroll", this.preventScroll);
+              window.removeEventListener("wheel", this.preventScroll);
+              window.removeEventListener("touchmove", this.preventScroll);
+              document.removeEventListener("touchmove", this.preventScroll);
+              document.removeEventListener("gesturestart", this.preventScroll); // ✅ TAMBAHAN
+              document.removeEventListener("gesturechange", this.preventScroll); // ✅ TAMBAHAN
+              document.removeEventListener("gestureend", this.preventScroll); // ✅ TAMBAHAN
             }
           },
+
+          playMusicWithUserInteraction() {
+            console.log("Trying to play music...");
+
+            const audio = this.$refs.backgroundMusic;
+            if (audio) {
+              audio.volume = 0.5;
+              audio.load();
+
+              const playAttempt = () => {
+                const playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      this.isPlaying = true;
+                      console.log("Music playing!");
+                    })
+                    .catch((error) => {
+                      console.log("Play prevented:", error);
+                      setTimeout(() => {
+                        audio
+                          .play()
+                          .then(() => {
+                            this.isPlaying = true;
+                            console.log("Music playing (retry)!");
+                          })
+                          .catch((err) => {
+                            console.log("Retry failed:", err);
+                            this.isPlaying = false;
+                          });
+                      }, 1000);
+                    });
+                }
+              };
+
+              playAttempt();
+              setTimeout(playAttempt, 500);
+              setTimeout(playAttempt, 1000);
+            }
+          },
+
+          toggleMusic() {
+            console.log("Toggle music clicked!");
+
+            const audio = this.$refs.backgroundMusic;
+            if (audio) {
+              if (this.isPlaying) {
+                audio.pause();
+                this.isPlaying = false;
+                console.log("Music paused");
+              } else {
+                audio.volume = 0.5;
+                audio
+                  .play()
+                  .then(() => {
+                    this.isPlaying = true;
+                    console.log("Music playing");
+                  })
+                  .catch((error) => {
+                    console.log("Play prevented:", error);
+                    this.isPlaying = false;
+                  });
+              }
+            }
+          },
+
           closeSuccessModal() {
             const modal = document.getElementById("successModal");
             if (modal) {
@@ -10689,140 +11004,6 @@
             }
           },
 
-          lockScrollOnLoad() {
-            // Lock scroll dengan multiple methods untuk mobile
-            document.documentElement.style.overflow = "hidden";
-            document.documentElement.style.position = "fixed";
-            document.documentElement.style.width = "100%";
-            document.documentElement.style.height = "100%";
-
-            document.body.style.overflow = "hidden";
-            document.body.style.position = "fixed";
-            document.body.style.width = "100%";
-            document.body.style.height = "100%";
-            document.body.style.touchAction = "none"; // Prevent touch scrolling
-
-            document.documentElement.classList.add("no-scroll");
-            document.body.classList.add("no-scroll");
-
-            // Lock content overlay
-            const contentOverlay = document.getElementById("contentOverlay");
-            if (contentOverlay) {
-              contentOverlay.classList.add("content-locked");
-              contentOverlay.style.pointerEvents = "none";
-              contentOverlay.style.userSelect = "none";
-            }
-
-            // Prevent touch move on document
-            this.touchMoveHandler = (e) => {
-              if (!this.invitationOpened) {
-                e.preventDefault();
-              }
-            };
-            document.addEventListener("touchmove", this.touchMoveHandler, {
-              passive: false,
-            });
-          },
-
-          unlockScroll() {
-            // Remove all scroll locks
-            document.documentElement.style.overflow = "";
-            document.documentElement.style.position = "";
-            document.documentElement.style.width = "";
-            document.documentElement.style.height = "";
-
-            document.body.style.overflow = "";
-            document.body.style.position = "";
-            document.body.style.width = "";
-            document.body.style.height = "";
-            document.body.style.touchAction = "";
-
-            document.documentElement.classList.remove("no-scroll");
-            document.body.classList.remove("no-scroll");
-
-            // Unlock content overlay
-            const contentOverlay = document.getElementById("contentOverlay");
-            if (contentOverlay) {
-              contentOverlay.classList.remove("content-locked");
-              contentOverlay.style.pointerEvents = "";
-              contentOverlay.style.userSelect = "";
-            }
-
-            // Remove touch move prevention
-            if (this.touchMoveHandler) {
-              document.removeEventListener("touchmove", this.touchMoveHandler);
-            }
-          },
-
-          playMusicWithUserInteraction() {
-            const audio = this.$refs.backgroundMusic;
-            if (audio) {
-              // Reset audio jika sudah dimuat sebelumnya
-              audio.load();
-
-              // Coba play dengan promise
-              const playPromise = audio.play();
-
-              if (playPromise !== undefined) {
-                playPromise
-                  .then(() => {
-                    this.isPlaying = true;
-                    console.log("Music started playing");
-                  })
-                  .catch((error) => {
-                    console.log("Auto-play prevented:", error);
-                    // Jika gagal, coba lagi setelah delay
-                    setTimeout(() => {
-                      audio
-                        .play()
-                        .then(() => {
-                          this.isPlaying = true;
-                        })
-                        .catch((err) =>
-                          console.log("Second attempt failed:", err)
-                        );
-                    }, 500);
-                  });
-              }
-            }
-          },
-
-          playMusic() {
-            const audio = this.$refs.backgroundMusic;
-            if (audio) {
-              audio.load(); // Reload audio
-              audio
-                .play()
-                .then(() => {
-                  this.isPlaying = true;
-                })
-                .catch((error) => {
-                  console.log("Auto-play prevented:", error);
-                });
-            }
-          },
-
-          toggleMusic() {
-            const audio = this.$refs.backgroundMusic;
-            if (audio) {
-              if (this.isPlaying) {
-                audio.pause();
-                this.isPlaying = false;
-              } else {
-                audio.load(); // Reload sebelum play
-                audio
-                  .play()
-                  .then(() => {
-                    this.isPlaying = true;
-                  })
-                  .catch((error) => {
-                    console.log("Play prevented:", error);
-                  });
-              }
-            }
-          },
-
-          // RSVP Methods
           setupFormHandlers() {
             const form = document.getElementById("rsvpForm");
             const attendanceInputs = document.querySelectorAll(
@@ -10872,10 +11053,7 @@
                     opacity: 0,
                   },
                 ],
-                {
-                  duration: 600,
-                  easing: "ease-out",
-                }
+                { duration: 600, easing: "ease-out" }
               );
 
               setTimeout(() => {
@@ -10922,9 +11100,7 @@
             };
 
             try {
-              // Simpan ke Firebase
               await database.ref("rsvp/" + rsvpData.id).set(rsvpData);
-
               this.showSuccessModal();
               form.reset();
               this.showGuestsField = false;
@@ -10945,7 +11121,6 @@
             const container = document.getElementById("messagesContainer");
 
             try {
-              // Load dari Firebase
               const snapshot = await database
                 .ref("rsvp")
                 .orderByChild("timestamp")
@@ -10955,11 +11130,11 @@
                 this.messages = [];
                 if (container) {
                   container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-comments"></i>
-            <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
-          </div>
-        `;
+              <div class="empty-state">
+                <i class="fas fa-comments"></i>
+                <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
+              </div>
+            `;
                 }
                 return;
               }
@@ -10969,7 +11144,6 @@
                 messages.push(childSnapshot.val());
               });
 
-              // Sort dari terbaru
               messages.sort((a, b) => b.timestamp - a.timestamp);
               this.messages = messages;
               this.renderMessages();
@@ -10978,11 +11152,11 @@
               this.messages = [];
               if (container) {
                 container.innerHTML = `
-        <div class="empty-state">
-          <i class="fas fa-exclamation-circle"></i>
-          <p class="font-garamond-semibold text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
-        </div>
-      `;
+            <div class="empty-state">
+              <i class="fas fa-exclamation-circle"></i>
+              <p class="font-garamond-semibold text-lg text-pink-700">Gagal memuat ucapan. Silakan refresh halaman.</p>
+            </div>
+          `;
               }
             }
           },
@@ -10993,11 +11167,11 @@
 
             if (this.messages.length === 0) {
               container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-comments"></i>
-                        <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
-                    </div>
-                `;
+          <div class="empty-state">
+            <i class="fas fa-comments"></i>
+            <p class="font-garamond-semibold text-xl text-pink-700">Belum ada ucapan. Jadilah yang pertama!</p>
+          </div>
+        `;
             } else {
               container.innerHTML = this.messages
                 .map((msg) => this.createMessageHTML(msg))
@@ -11012,33 +11186,31 @@
             const initial = data.name.charAt(0).toUpperCase();
 
             return `
-                <div class="message-bubble">
-                    <div class="flex items-start">
-                        <div class="message-avatar">
-                            ${initial}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between mb-2">
-                                <div>
-                                    <h4 class="font-garamond-bold text-lg text-pink-800">
-                                        ${this.escapeHtml(data.name)}
-                                        ${attendanceBadge}
-                                    </h4>
-                                    <p class="text-xs text-pink-500 font-garamond-italic">${formattedDate}</p>
-                                </div>
-                            </div>
-                            <p class="text-pink-700 font-garamond-reguler leading-relaxed">${this.escapeHtml(
-                              data.message
-                            )}</p>
-                            ${
-                              data.guests > 0
-                                ? `<p class="text-sm text-pink-500 mt-2 font-garamond-reguler"><i class="fas fa-users mr-1"></i> ${data.guests} orang</p>`
-                                : ""
-                            }
-                        </div>
-                    </div>
+        <div class="message-bubble">
+          <div class="flex items-start">
+            <div class="message-avatar">${initial}</div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <h4 class="font-garamond-bold text-lg text-pink-800">
+                    ${this.escapeHtml(data.name)}
+                    ${attendanceBadge}
+                  </h4>
+                  <p class="text-xs text-pink-500 font-garamond-italic">${formattedDate}</p>
                 </div>
-            `;
+              </div>
+              <p class="text-pink-700 font-garamond-reguler leading-relaxed">${this.escapeHtml(
+                data.message
+              )}</p>
+              ${
+                data.guests > 0
+                  ? `<p class="text-sm text-pink-500 mt-2 font-garamond-reguler"><i class="fas fa-users mr-1"></i> ${data.guests} orang</p>`
+                  : ""
+              }
+            </div>
+          </div>
+        </div>
+      `;
           },
 
           getAttendanceBadge(attendance) {
@@ -11129,9 +11301,11 @@
             }
           },
 
-          // Scroll & Countdown Methods
           initSmoothScroll() {
+            // ✅ HANYA jalankan jika invitation sudah dibuka
             window.addEventListener("scroll", () => {
+              if (!this.invitationOpened) return; // ✅ TAMBAHAN
+
               const scrollProgress = document.getElementById("scrollProgress");
               const windowHeight =
                 document.documentElement.scrollHeight -
@@ -11167,8 +11341,11 @@
               });
             }
 
+            // ✅ SKIP anchor links untuk openInvitationBtn
             document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
               anchor.addEventListener("click", function (e) {
+                if (this.id === "openInvitationBtn") return; // ✅ TAMBAHAN
+
                 e.preventDefault();
                 const target = document.querySelector(
                   this.getAttribute("href")
@@ -11233,6 +11410,16 @@
         beforeDestroy() {
           if (this.countdownInterval) {
             clearInterval(this.countdownInterval);
+          }
+          // ✅ TAMBAHAN: Clean up event listeners
+          if (this.preventScroll) {
+            window.removeEventListener("scroll", this.preventScroll);
+            window.removeEventListener("wheel", this.preventScroll);
+            window.removeEventListener("touchmove", this.preventScroll);
+            document.removeEventListener("touchmove", this.preventScroll);
+            document.removeEventListener("gesturestart", this.preventScroll);
+            document.removeEventListener("gesturechange", this.preventScroll);
+            document.removeEventListener("gestureend", this.preventScroll);
           }
         },
       });
